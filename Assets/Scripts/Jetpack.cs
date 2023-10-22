@@ -11,24 +11,35 @@ public class Jetpack : MonoBehaviour
 	}
 
 	#region Properties
-	public float Energy { get; set; }
+	public float Energy 
+	{
+		get
+		{
+			return _energy;
+		}
+		set
+		{
+			_energy = Mathf.Clamp(value,0,_maxEnergy);
+		}
+	}
+	public bool Flying { get; set; }
 	#endregion
 
 	#region Fields							     
-	private Rigidbody2D _target;
+	private Rigidbody2D _targetRB;
+	[SerializeField] private float _energy;
 	[SerializeField] private float _maxEnergy;
 	[SerializeField] private float _energyFlyingRatio;
 	[SerializeField] private float _energyRegenerationRatio;
 	[SerializeField] private float _horizontalForce;
 	[SerializeField] private float _flyForce;
-	private bool _flying = false;
 
 	#endregion
 
 	#region Unity Callbacks
 	private void Awake()
 	{
-		_target = GetComponent<Rigidbody2D>();
+		_targetRB = GetComponent<Rigidbody2D>();
 	}
 	// Start is called before the first frame update
 	void Start()
@@ -39,8 +50,13 @@ public class Jetpack : MonoBehaviour
 	// Update is called once per physic frame
 	void FixedUpdate()
 	{
-		if (_flying)
+		if (Flying)
 			DoFly();
+
+		//Le quitamos el signo a la velocidad si es negativa.
+		//Luego si es menor de 0.1, consideramos que estamos parados y cargamos
+		if (Mathf.Abs(_targetRB.velocity.y) < 0.1f)
+			Regenerate();
 	}
 
 	#endregion
@@ -48,32 +64,32 @@ public class Jetpack : MonoBehaviour
 	#region Public Methods
 	public void FlyUp()
 	{
-		_flying = true;
+		Flying = true;
 	}
 	public void StopFlying()
 	{
-		_flying = false;
+		Flying = false;
 	}
 
 	public void Regenerate()
-	{
+	{		
 		Energy += _energyRegenerationRatio;
 	}
 
-	public void Regenerate(float energy)
+	public void AddEnergy(float energy)
 	{
 		Energy += energy;
 	}
 
 	public void FlyHorizontal(Direction flyDirection)
 	{
-		if (!_flying)
+		if (!Flying)
 			return;
 
 		if (flyDirection == Direction.Left)
-			_target.AddForce(Vector2.left * _horizontalForce);
+			_targetRB.AddForce(Vector2.left * _horizontalForce);
 		else
-			_target.AddForce(Vector2.right * _horizontalForce);
+			_targetRB.AddForce(Vector2.right * _horizontalForce);
 
 	}
 	#endregion
@@ -83,11 +99,11 @@ public class Jetpack : MonoBehaviour
 	{
 		if (Energy > 0)
 		{
-			_target.AddForce(Vector2.up * _flyForce);
+			_targetRB.AddForce(Vector2.up * _flyForce);
 			Energy -= _energyFlyingRatio;
 		}
 		else
-			_flying = false;
+			Flying = false;
 	}
 	#endregion
 }

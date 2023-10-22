@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3032442121949320817}
+  - component: {fileID: 6824231244803903919}
   - component: {fileID: 6202818291053993745}
   - component: {fileID: 3574023175227339799}
   - component: {fileID: 6673620376518725302}
@@ -17,7 +18,7 @@ GameObject:
   - component: {fileID: 4336429663560854471}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,6 +39,19 @@ Transform:
   - {fileID: 5229819850073432425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6824231244803903919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676104365899727684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96775508b21f9824f8700618520c4fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jetpack: {fileID: 6202818291053993745}
 --- !u!114 &6202818291053993745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,11 +64,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bc1d4d491fc6494faf37235ccde6fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _energy: 0
   _maxEnergy: 100
-  _energyFlyingRatio: 0.1
-  _energyRegenerationRatio: 0.5
-  _horizontalForce: 1000
-  _flyForce: 1000
+  _energyFlyingRatio: 0.2
+  _energyRegenerationRatio: 0.2
+  _horizontalForce: 15
+  _flyForce: 300
 --- !u!114 &3574023175227339799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +204,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 20
-  m_LinearDrag: 0
+  m_LinearDrag: 0.2
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
